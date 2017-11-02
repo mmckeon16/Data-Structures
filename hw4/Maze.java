@@ -126,44 +126,53 @@ public class Maze implements GridColors {
         	if(y+1 < maze.getNRows() && maze.getColor(x, y+1).equals(NON_BACKGROUND)){
         		count++;
         	}
-        	if(count >= 2){
+        	if(count >= 3){
         		Stack<PairInt> temp = new Stack<PairInt>();
         		icr = isCycle(x+1, y, trace, temp);
         		icl = isCycle(x-1, y, trace, temp);	
         		icd = isCycle(x, y-1, trace, temp);
         		icu = isCycle(x, y+1, trace, temp);
-        	}
         		if(icr){ //cycle to the right
         			trace.push(new PairInt(x,y));
     	        	findMazePathStackBased(x-1,y,result,trace);
     	        	findMazePathStackBased(x,y+1,result,trace);
     	        	findMazePathStackBased(x,y-1,result,trace);
-        		}
-        		if(icl){ //cycle to the left
+        		}else if(icl){ //cycle to the left
         			trace.push(new PairInt(x,y));
     	        	findMazePathStackBased(x+1,y,result,trace);
     	        	findMazePathStackBased(x,y+1,result,trace);
     	        	findMazePathStackBased(x,y-1,result,trace);
-        		}
-        		if(icd){ // cycle below
+        		} else if(icd){ // cycle below
         			trace.push(new PairInt(x,y));
     	        	findMazePathStackBased(x+1,y,result,trace);
     	        	findMazePathStackBased(x-1,y,result,trace);
     	        	findMazePathStackBased(x,y+1,result,trace);
-        		}
-        		if(icu){ //cycle above
+        		}else if(icu){ //cycle above
         			trace.push(new PairInt(x,y));
     	        	findMazePathStackBased(x+1,y,result,trace);
     	        	findMazePathStackBased(x-1,y,result,trace);
     	        	findMazePathStackBased(x,y-1,result,trace);
-        		} else { //TODO consider multiple cycles
+        		} else{
+        			trace.push(new PairInt(x,y));
         			findMazePathStackBased(x+1,y,result,trace);
-    	        	findMazePathStackBased(x-1,y,result,trace);
-    	        	findMazePathStackBased(x,y-1,result,trace);
-    	        	findMazePathStackBased(x,y+1,result,trace);
+        	        findMazePathStackBased(x-1,y,result,trace);
+        	        findMazePathStackBased(x,y-1,result,trace);
+        	        findMazePathStackBased(x,y+1,result,trace);
         		}
-	        	maze.recolor(x,y,NON_BACKGROUND);
+        	} else { //TODO consider multiple cycles
+        		trace.push(new PairInt(x,y));
+        		findMazePathStackBased(x+1,y,result,trace);
+    	        findMazePathStackBased(x-1,y,result,trace);
+    	        findMazePathStackBased(x,y-1,result,trace);
+    	        findMazePathStackBased(x,y+1,result,trace);
         	}
+        	trace.pop();
+	        maze.recolor(x,y,NON_BACKGROUND);
+        	}
+        	if(!trace.isEmpty()){
+            	trace.pop();       		
+        	}
+
         	return;
       } 
 
