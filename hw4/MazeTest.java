@@ -122,5 +122,6 @@ public class MazeTest extends JFrame implements GridColors {
     	for(int i=0;i<test.size();i++){
     		System.out.println(test.get(i).toString());
     	}
+    	System.out.println("Minimum Path: " + m.findMazePathMin(0,0));
     }
 }
