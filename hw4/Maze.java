@@ -36,12 +36,12 @@ public class Maze implements GridColors {
     public boolean findMazePath(int x, int y) {
         if(x < 0 || y < 0 || x > maze.getNCols()-1 || y > maze.getNRows()-1){ // block is out of bounds
         	return false;
-        } else if (x == maze.getNCols()-1 && y == maze.getNRows()-1){ // it reached the winning block
-        	maze.recolor(x,y,PATH);
-    		return true;
         } else if(maze.getColor(x,y).equals(BACKGROUND) || maze.getColor(x,y).equals(TEMPORARY)){ //this block has already been visited
         	return false;
-        }else if(maze.getColor(x, y).equals(NON_BACKGROUND)){ //the block has not been visited
+        }else if (x == maze.getNCols()-1 && y == maze.getNRows()-1){ // it reached the winning block
+        	maze.recolor(x,y,PATH);
+    		return true;
+        } else if(maze.getColor(x, y).equals(NON_BACKGROUND)){ //the block has not been visited
         	maze.recolor(x,y,TEMPORARY);
         	boolean foundPath = findMazePath(x+1, y) || findMazePath(x, y+1) || findMazePath(x-1, y) || findMazePath(x, y-1);
         	if(foundPath == true){ //recoloring the path green
@@ -100,8 +100,17 @@ public class Maze implements GridColors {
     	return result;
     }
     
+    /**
+     * Finds all possible paths, and then finds the minimum path and returns it, will return the empty
+     * @param x current x coordinate
+     * @param y current y coordinate
+     * @return ArrayList<PairInt> minimum path to exit from (0,0)
+     */
     public ArrayList<PairInt> findMazePathMin(int x, int y){
     	ArrayList<ArrayList<PairInt>> result = findAllMazePaths(0,0);
+    	if(result.size() == 0){
+    		return new ArrayList<PairInt>(); 
+    	}
     	ArrayList<PairInt> minSize = result.get(0);
     	for(int i = 0; i < result.size(); i++){
     		if(minSize.size() > result.get(i).size()){

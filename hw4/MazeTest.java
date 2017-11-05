@@ -89,17 +89,10 @@ public class MazeTest extends JFrame implements GridColors {
                 (new Maze(theGrid)).restore();
             }
         });
-        JButton solveProb2 = new JButton("SOLVE Prob 2");
-        solveButton.addActionListener(new ActionListener() {
 
-            public void actionPerformed(ActionEvent e) {
-                solveProb2();
-            }
-        });
         JPanel bottomPanel = new JPanel();
         bottomPanel.add(solveButton);
         bottomPanel.add(resetButton);
-        bottomPanel.add(solveProb2);
         getContentPane().add(bottomPanel, BorderLayout.SOUTH);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         pack();
@@ -115,13 +108,5 @@ public class MazeTest extends JFrame implements GridColors {
             JOptionPane.showMessageDialog(null, "No path - reset maze and try again");
         } 
     }
-    
-    public void solveProb2(){
-    	Maze m = new Maze(theGrid);
-    	ArrayList<ArrayList<PairInt>> test = m.findAllMazePaths(5, 5);
-    	for(int i=0;i<test.size();i++){
-    		System.out.println(test.get(i).toString());
-    	}
-    	System.out.println("Minimum Path: " + m.findMazePathMin(0,0));
-    }
+
 }
