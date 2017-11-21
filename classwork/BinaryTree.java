@@ -145,7 +145,8 @@ public class BinaryTree <E>{
 				lt = rbt(depth-1, max);
 				rt = new BinaryTree<Integer>();
 			}else if(rint<=60){
-				lt = new BinaryTree<Integer>();rbt(depth-1, max);
+				lt = new BinaryTree<Integer>();
+				rbt(depth-1, max);
 				rt = new BinaryTree<Integer>();
 			}
 			return new BinaryTree<Integer>(rand.nextInt(max), lt, rt);
