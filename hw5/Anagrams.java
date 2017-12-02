@@ -11,11 +11,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Anagrams {
+public class Anagrams implements Comparable{
 	final Integer[] primes = {2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,101};;
 	static Map<Character,Integer> letterTable;
 	Map<Long,ArrayList<String>> anagramTable;
-	ArrayList<Long> keyCodes;
 	
 	//Constructor
 	public Anagrams (){
@@ -63,7 +62,6 @@ public class Anagrams {
 			anagramTable.put(code, new ArrayList<String>());
 		}
 		anagramTable.get(code).add(s);
-		keyCodes.add(code);
 	}
 	
 	private Long myHashCode(String s){
@@ -86,15 +84,27 @@ public class Anagrams {
 	}
 	
 	private ArrayList<Map.Entry<Long,ArrayList<String>>> getMaxEntries(){
-		ArrayList<Map.Entry<Long,ArrayList<String>>> maxAnagrams = new ArrayList<Map.Entry<Long,ArrayList<String>>>();
-		if(maxAnagrams == null){
+		ArrayList<Map.Entry<Long,ArrayList<String>>> maxAnagrams = new ArrayList<HashMap.Entry<Long,ArrayList<String>>>();
+		if(anagramTable.isEmpty()){
 			return null;
 		}else{
-			maxAnagrams = (keyCodes.get(0), anagramTable.get(keyCodes.get(0)));
+			maxAnagrams.add(anagramTable.entrySet().iterator().next());
 		}
-		for(int i = 0; i< keyCodes.size(); i++){
-			i
+		for(Map.Entry<Long, ArrayList<String>> entry : anagramTable.entrySet()) { //goes over each entry in the hashmap
+			boolean inTable = false;
+			for (int i = 0; i < maxAnagrams.size(); i++){ // checks if current entry is already in the table
+				if((((Comparable) entry.getValue()).compareTo(maxAnagrams.get(i).getValue()) == 0)){
+					inTable = true;
+				}
+			}
+			if(maxAnagrams.get(1).getValue().size() == entry.getValue().size() && !inTable){ // if the amount of anagrams is the same as the current max, insert into table
+				maxAnagrams.add(entry);
+			} else if(!inTable && maxAnagrams.get(1).getValue().size() < entry.getValue().size()){ //if current entry has more anagrams, get rid of current max and add entry
+				maxAnagrams.clear();
+				maxAnagrams.add(entry);
+			}
 		}
+		return maxAnagrams;
 	}
 	
 	public static void main(String[] args){
